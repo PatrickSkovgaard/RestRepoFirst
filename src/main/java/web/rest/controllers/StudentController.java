@@ -57,12 +57,16 @@ public class StudentController {
         //Hvis id er sat, så returnerers BAD_REQUEST
         //Virker ikke ordentligt? sætter stadig ny student ind?
         if(student.getId() != null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         //1
         Student newStudent = studentRepository.save(student);
 
-        return ResponseEntity.status(HttpStatus.CREATED).header("Location", "/students/" + newStudent.getId()).body(newStudent);
+        //Laver en string til location, frem for at skrive en længere linje nede i return.
+        String location = "/students/" + newStudent.getId();
+
+        //HttpStatus Created 201
+        return ResponseEntity.status(HttpStatus.CREATED).header("Location", location).body(newStudent);
 
     }
 
