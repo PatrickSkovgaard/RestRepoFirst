@@ -17,6 +17,13 @@ VALUES ( 'abe' ),
                   ('giraf');
 
 
+INSERT INTO assignments (name, deadline, student_id)
+VALUES ('Hent bananer', '2022-08-01', 1),
+                  ('Kattemadssortering', '2025-01-25', 2),
+                  ('Lig en dej', '2021-09-22', 3),
+                  ('Se over bjerget', '2022-01-02', 4);
+
+
 
 
 

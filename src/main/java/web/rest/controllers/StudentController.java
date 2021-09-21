@@ -3,7 +3,9 @@ package web.rest.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import web.rest.models.Assignment;
 import web.rest.models.Student;
+import web.rest.repositories.AssignmentRepository;
 import web.rest.repositories.StudentRepository;
 
 import java.util.ArrayList;
@@ -15,10 +17,12 @@ import java.util.Optional;
 public class StudentController {
 
     private StudentRepository studentRepository;
+    private AssignmentRepository assignmentRepository;
 
     //Constructor Injection
-    public StudentController(StudentRepository studentRepository){
+    public StudentController(StudentRepository studentRepository, AssignmentRepository assignmentRepository){
         this.studentRepository = studentRepository;
+        this.assignmentRepository = assignmentRepository;
     }
 
     //HTTP GET (/students)
@@ -61,6 +65,12 @@ public class StudentController {
         }
         //1
         Student newStudent = studentRepository.save(student);
+
+        //Brug id fra newStudent til at sætte foreign-key i assignments
+        for (Assignment assignment : newStudent.getAssignments()){
+            assignment.setStudent(newStudent);
+            assignmentRepository.save(assignment);
+        }
 
         //Laver en string til location, frem for at skrive en længere linje nede i return.
         String location = "/students/" + newStudent.getId();
